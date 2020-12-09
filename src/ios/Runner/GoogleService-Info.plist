@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>539396985374-n09ff4hodnghlumpm8i3dma1s3iv3moc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.539396985374-n09ff4hodnghlumpm8i3dma1s3iv3moc</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCeiL8fdhnmCW85jfWjQbOY1ZvxYzzcYH8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>539396985374</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.qthuy.scd</string>
+	<key>PROJECT_ID</key>
+	<string>skin-cancer-diagnose</string>
+	<key>STORAGE_BUCKET</key>
+	<string>skin-cancer-diagnose.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:539396985374:ios:427cef618fee08f043140f</string>
+</dict>
+</plist>
