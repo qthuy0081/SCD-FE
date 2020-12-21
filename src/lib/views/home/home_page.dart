@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:src/blocs/app_tab/apptab_bloc.dart';
 import 'package:src/blocs/authentication/authentication_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/views/home/components/home_tab.dart';
+import 'package:src/views/home/components/tab_selector.dart';
+import 'components/info_tab.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
   static Route route() {
@@ -8,52 +12,44 @@ class HomePage extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final user = context.select((AuthenticationBloc bloc) => bloc.state.user);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        actions: [
-          IconButton(
-            key: const Key('homePage_logout_iconButton'),
-            icon: const Icon(Icons.exit_to_app),
-            onPressed: () => context
-                .read<AuthenticationBloc>()
-                .add(AuthenticationLogoutRequested()),
-          )
-        ],
-      ),
-      body: Align(alignment: const Alignment(0, -1/3),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Avatar(photo: user.photo),
-            const SizedBox(height: 4.0),
-            Text(user.email, style: textTheme.headline6),
-            const SizedBox(height: 4.0),
-            Text(user.name ?? '', style: textTheme.headline5),
-        ],
-      ),),
+    
+    return BlocBuilder<AppTabBloc, AppTab>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Skin Cancer Diagnose'),
+            actions: [
+              IconButton(
+                key: const Key('homePage_logout_iconButton'),
+                icon: const Icon(Icons.exit_to_app),
+                onPressed: () => BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationLogoutRequested()),
+              )
+            ],
+          ),
+          body:  tabContent(state),
+          floatingActionButton: FloatingActionButton(onPressed: (){
+            Navigator.pushNamed(context, '/addPhoto');
+          }, tooltip: 'Add photos',child: Icon(Icons.add_a_photo),),
+          bottomNavigationBar: TabSelector(activeTab: state, onTabSelected: (tab)=>{
+            BlocProvider.of<AppTabBloc>(context).add(TabUpdated(tab))
+          }),
+        );
+      },
     );
+  }
+  tabContent(AppTab tab) {
+    switch (tab) {
+      case AppTab.home:
+        return HomeTab();
+        break;
+        case AppTab.info:
+        return InfoTab();
+        break;
+        case AppTab.notify:
+        return Center(child: Text('Notify tab'));
+        break;
+      default:
+    }
   }
 }
 
-
-// Avatar
-const _avatarSize = 48.0;
-class Avatar extends StatelessWidget {
-  const Avatar({Key key, this.photo}) : super(key: key);
-  
-  final String photo;
-
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: _avatarSize,
-      backgroundImage: photo != null ? NetworkImage(photo) : null,
-      child: photo == null
-          ? const Icon(Icons.person_outline, size: _avatarSize)
-          : null,
-    );
-  }
-}

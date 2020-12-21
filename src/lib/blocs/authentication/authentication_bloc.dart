@@ -6,13 +6,16 @@ import 'package:meta/meta.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:src/models/models.dart';
 import 'package:src/repositories/repositories.dart';
+import 'package:src/repositories/user_firestore_services.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
-class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   final AuthenticationRepository _authenticationRepository;
   StreamSubscription<UserModel> _userSubscription;
+  UserFireStoreServices userFireStoreServices;
 
   AuthenticationBloc({
     @required AuthenticationRepository authenticationRepository,
@@ -29,12 +32,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     AuthenticationEvent event,
   ) async* {
     // TODO: implement mapEventToState
-    if(event is AuthenticationUserChanged) {
+    if (event is AuthenticationUserChanged) {
       yield _mapAuthenticationUserChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
       unawaited(_authenticationRepository.logOut());
     }
   }
+
   @override
   Future<void> close() {
     // TODO: implement close
@@ -42,8 +46,10 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     return super.close();
   }
 
-  AuthenticationState _mapAuthenticationUserChangedToState(AuthenticationUserChanged event){
-    return event.user != UserModel.empty ? AuthenticationState.authenticated(event.user)
+  AuthenticationState _mapAuthenticationUserChangedToState(
+      AuthenticationUserChanged event)  {
+    return event.user != UserModel.empty
+        ? AuthenticationState.authenticated(event.user)
         : const AuthenticationState.unauthenticated();
   }
 }

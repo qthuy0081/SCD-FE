@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:src/models/models.dart';
+import 'package:src/repositories/user_firestore_services.dart';
 
 class SignUpFailure implements Exception {}
 
@@ -17,13 +18,15 @@ class AuthenticationRepository {
   final GoogleSignIn _googleSignIn;
 
   AuthenticationRepository(
-      {FirebaseAuth firebaseAuth, GoogleSignIn googleSignIn})
+      {FirebaseAuth firebaseAuth,
+      GoogleSignIn googleSignIn,
+      UserFireStoreServices userFireStoreServices})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
-  
-  Stream<UserModel> get user{
+
+  Stream<UserModel> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      return firebaseUser == null ? UserModel.empty : firebaseUser.toUser;
+      return firebaseUser == null ? UserModel.empty : firebaseUser.toUserModel;
     });
   }
 
@@ -49,7 +52,7 @@ class AuthenticationRepository {
       throw LogInWithGoogleFailure();
     }
   }
-  
+
   Future<void> logInWithEmailAndPassword({
     @required String email,
     @required String password,
@@ -75,7 +78,13 @@ class AuthenticationRepository {
 }
 
 extension on User {
-  UserModel get toUser {
-    return UserModel(email: email, id: uid, name: displayName, role: 'patient', photo: photoURL);
+  UserModel get toUserModel {
+    return UserModel(
+      email: email,
+      id: uid,
+      name: displayName,
+      role: 'patient',
+      avatar: photoURL,
+    );
   }
 }
