@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:formz/formz.dart';
 import 'package:src/cubits/login/login_cubit.dart';
+import 'package:src/views/login/fade_animation.dart';
 import 'package:src/views/signup/signup_page.dart';
 
 class LoginForm extends StatelessWidget {
@@ -11,39 +12,131 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) {
-        if (state.status.isSubmissionFailure) {
-          Scaffold.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-                const SnackBar(content: Text('Authentication Failure')));
-        }
-      },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/logo.png',
-                height: 120,
+        listener: (context, state) {
+          if (state.status.isSubmissionFailure) {
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                  const SnackBar(content: Text('Authentication Failure')));
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 80,
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  FadeAnimation(
+                      1,
+                      Text(
+                        "Login",
+                        style: TextStyle(color: Colors.white, fontSize: 40),
+                      )),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  FadeAnimation(
+                      1.3,
+                      Text(
+                        "Skin Cancer Diagnose",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      )),
+                ],
               ),
-              const SizedBox(height: 16),
-              _EmailInput(),
-              const SizedBox(height: 8.0),
-              _PasswordInput(),
-              const SizedBox(height: 8.0),
-              _LoginButton(),
-              const SizedBox(height: 8.0),
-              _GoogleLoginButton(),
-              const SizedBox(height: 4.0),
-              _SignUpButton(),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+            SizedBox(height: 20),
+            Expanded(
+                child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                      topRight: Radius.circular(60))),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(30),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 60,
+                      ),
+                      FadeAnimation(
+                          1.4,
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Color.fromRGBO(225, 95, 27, .3),
+                                      blurRadius: 20,
+                                      offset: Offset(0, 10))
+                                ]),
+                            child: Column(
+                              children: [
+                                Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Colors.grey[200]))),
+                                    child: _EmailInput()),
+                                Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Colors.grey[200]))),
+                                    child: _PasswordInput()),
+                              ],
+                            ),
+                          )),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      FadeAnimation(
+                          1.6,
+                          Container(
+                            height: 50,
+                            margin: EdgeInsets.symmetric(horizontal: 50),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.orange[900]),
+                            child: Center(child: _LoginButton()),
+                          )),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      
+                          FadeAnimation(
+                          1.5,
+                          _SignUpButton()
+                          ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      FadeAnimation(
+                          1.7,
+                          Text(
+                            "Or",
+                            style: TextStyle(color: Colors.grey),
+                          )),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      FadeAnimation(1.8, _GoogleLoginButton()),
+                    ],
+                  ),
+                ),
+              ),
+            ))
+          ],
+        ));
   }
 }
 
@@ -61,9 +154,7 @@ class _EmailInput extends StatelessWidget {
                 context.read<LoginCubit>().emailChanged(email),
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-                labelText: 'email',
-                helperText: '',
-                errorText: state.email.invalid ? 'invalid email' : null),
+                hintText: 'Email', helperText: '', border: InputBorder.none),
           );
         });
   }
@@ -83,9 +174,7 @@ class _PasswordInput extends StatelessWidget {
                 context.read<LoginCubit>().passwordChanged(password),
             obscureText: true,
             decoration: InputDecoration(
-                labelText: 'password',
-                helperText: '',
-                errorText: state.password.invalid ? 'invalid password' : null),
+                hintText: 'Password', helperText: '', border: InputBorder.none),
           );
         });
   }
@@ -99,13 +188,16 @@ class _LoginButton extends StatelessWidget {
       builder: (context, state) {
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
-            : RaisedButton(
+            : FlatButton(
                 key: const Key('loginForm_continue_raisedButton'),
-                child: const Text('LOGIN'),
+                child: const Text(
+                  'LOGIN',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-                color: const Color(0xFFFFD600),
                 onPressed: state.status.isValidated
                     ? () => context.read<LoginCubit>().logInWithCredentials()
                     : null,
@@ -118,7 +210,7 @@ class _LoginButton extends StatelessWidget {
 class _GoogleLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+
     return RaisedButton.icon(
       key: const Key('loginForm_googleLogin_raisedButton'),
       label: const Text(
@@ -127,8 +219,8 @@ class _GoogleLoginButton extends StatelessWidget {
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       icon: const Icon(FontAwesomeIcons.google, color: Colors.white),
-      color: theme.accentColor,
       onPressed: () => context.read<LoginCubit>().logInWithGoogle(),
+      color: Colors.orange[900],
     );
   }
 }
@@ -136,15 +228,14 @@ class _GoogleLoginButton extends StatelessWidget {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+
     return FlatButton(
       key: const Key('loginForm_createAccount_flatButton'),
       child: Text(
         'CREATE ACCOUNT',
-        style: TextStyle(color: theme.primaryColor),
+        style: TextStyle(color: Colors.orange),
       ),
       onPressed: () => Navigator.of(context).push<void>(SignUpPage.route()),
     );
   }
 }
-

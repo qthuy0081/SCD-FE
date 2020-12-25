@@ -1,3 +1,4 @@
+import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:src/blocs/app_tab/apptab_bloc.dart';
 
@@ -13,28 +14,35 @@ class TabSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
+    return FFNavigationBar(
       key: const Key('bottom_navigation'),
-      currentIndex: AppTab.values.indexOf(activeTab),
-      onTap: (index) => onTabSelected(AppTab.values[index]),
+      theme: FFNavigationBarTheme(
+          barBackgroundColor: Colors.white,
+          selectedItemBorderColor: Colors.orange[900],
+          selectedItemBackgroundColor: Colors.orange[900],
+          selectedItemIconColor: Colors.white,
+          selectedItemLabelColor: Colors.orange[900],
+        ),
+      selectedIndex: AppTab.values.indexOf(activeTab),
+      onSelectTab: (index) => onTabSelected(AppTab.values[index]),
       items: AppTab.values.map((tab) {
-        Icon icon;
+        IconData icon;
         String text;
         switch (tab) {
           case AppTab.info:
-            icon = new Icon(Icons.info);
+            icon = Icons.info;
             text = 'info';
             break;
           case AppTab.home:
-            icon = new Icon(Icons.home);
+            icon = Icons.home;
             text = 'home';
             break;
           case AppTab.notify:
-            icon = new Icon(Icons.notifications);
+            icon = Icons.notifications;
             text = 'notify';
             break;
         }
-        return BottomNavigationBarItem(icon: icon, label: text);
+        return FFNavigationBarItem(iconData: icon, label: text);
       }).toList(),
     );
   }

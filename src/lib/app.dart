@@ -37,7 +37,8 @@ class App extends StatelessWidget {
             ),
             BlocProvider(
                 create: (context) =>
-                    PhotosBloc(photoRepository: photoFirebaseRepository)..add(LoadPhotos()))
+                    PhotosBloc(photoRepository: photoFirebaseRepository)
+                      ..add(LoadPhotos()))
           ],
           child: AppView(),
         ));
@@ -57,7 +58,6 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: theme,
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
@@ -81,9 +81,9 @@ class _AppViewState extends State<AppView> {
       routes: {
         '/addPhoto': (context) {
           return AddEditScreen(
-              onSave: (title, photoUrl, userId) {
-                BlocProvider.of<PhotosBloc>(context)
-                    .add(AddPhoto(Photo(title, photoUrl: photoUrl,userId: userId)));
+              onSave: (title, descript, userId, photoUrl, beConfidence, maConfidence) {
+                BlocProvider.of<PhotosBloc>(context).add(AddPhoto(Photo(title,
+                    descript: descript, userId: userId, photoUrl: photoUrl,benignRate: beConfidence, malignantRate: maConfidence)));
               },
               isEditing: false);
         }
@@ -91,6 +91,4 @@ class _AppViewState extends State<AppView> {
       onGenerateRoute: (_) => SplashPage.route(),
     );
   }
-
-  
 }

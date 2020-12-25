@@ -54,7 +54,11 @@ class DetailsPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Text(photo.photoUrl,
+                              FadeInImage.assetNetwork(
+                                image: photo.photoUrl,
+                                placeholder: 'assets/loading.gif',
+                              ),
+                              Text(photo.descript,
                                   style: Theme.of(context).textTheme.subtitle1)
                             ],
                           ))
@@ -63,25 +67,27 @@ class DetailsPage extends StatelessWidget {
                     ],
                   ),
                 ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.edit),
-            onPressed: photo == null
-                ? null
-                : () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return AddEditScreen(
-                        onSave: (title, photoUrl, userId) {
-                          BlocProvider.of<PhotosBloc>(context).add(UpdatePhoto(
-                              photo.copyWith(
-                                  title: title, photoUrl: photoUrl,userId: userId)));
-                        },
-                        isEditing: true,
-                        photo: photo,
-                      );
-                    }));
-                  },
-          ),
+          // floatingActionButton: FloatingActionButton(
+          //   child: Icon(Icons.edit),
+          //   onPressed: photo == null
+          //       ? null
+          //       : () {
+          //           Navigator.push(context,
+          //               MaterialPageRoute(builder: (context) {
+          //             return AddEditScreen(
+          //               onSave: (title, descript, userId, photoUrl) {
+          //                 BlocProvider.of<PhotosBloc>(context)
+          //                     .add(UpdatePhoto(photo.copyWith(
+          //                   title: title,
+          //                   descript: descript,
+          //                 )));
+          //               },
+          //               isEditing: true,
+          //               photo: photo,
+          //             );
+          //           }));
+          //         },
+          // ),
         );
       },
     );

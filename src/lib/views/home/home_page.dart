@@ -16,20 +16,10 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<AppTabBloc, AppTab>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            title: const Text('Skin Cancer Diagnose'),
-            actions: [
-              IconButton(
-                key: const Key('homePage_logout_iconButton'),
-                icon: const Icon(Icons.exit_to_app),
-                onPressed: () => BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationLogoutRequested()),
-              )
-            ],
-          ),
           body:  tabContent(state),
           floatingActionButton: FloatingActionButton(onPressed: (){
             Navigator.pushNamed(context, '/addPhoto');
-          }, tooltip: 'Add photos',child: Icon(Icons.add_a_photo),),
+          }, tooltip: 'Add photos',child: Icon(Icons.add_a_photo), backgroundColor: Colors.orange,),
           bottomNavigationBar: TabSelector(activeTab: state, onTabSelected: (tab)=>{
             BlocProvider.of<AppTabBloc>(context).add(TabUpdated(tab))
           }),
