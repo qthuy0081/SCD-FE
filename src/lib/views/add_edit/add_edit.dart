@@ -39,7 +39,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
   Future pickImage() async {
     try {
       final pickedImage =
-          await ImagePicker().getImage(source: ImageSource.camera);
+          await ImagePicker().getImage(source: ImageSource.gallery);
       setState(() {
         _imageFile = File(pickedImage.path);
       });
@@ -50,8 +50,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
 
   loadTfliteModel() async {
     var res = await Tflite.loadModel(
-        model: 'assets/model_tflite/model.tflite',
-        labels: 'assets/model_tflite/labels.txt');
+        model: 'assets/converted_tflite/model_unquant.tflite',
+        labels: 'assets/converted_tflite/labels.txt');
 
     print('\n Load Model Result: $res');
   }
@@ -116,7 +116,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                         left: 30.0, right: 30.0, top: 10.0, bottom: 30),
                     child: ClipRRect(
                         child: _imageFile != null
-                            ? Image.file(_imageFile,width: 24, height: 24,)
+                            ? Image.file(_imageFile)
                             : FlatButton(
                                 onPressed: pickImage,
                                 child: Icon(Icons.add_a_photo))),
@@ -149,7 +149,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                     child: Column(
                       children: [
                         Text('Benign: ${_beConfidence.toStringAsFixed(2)}'),
-                        Text('Malignant: ${_maConfidence.toStringAsFixed(2)}'),
+                        Text('Malgnant: ${_maConfidence.toStringAsFixed(2)}'),
                         RaisedButton(
                           onPressed: () {
                             if (_imageFile != null) {
