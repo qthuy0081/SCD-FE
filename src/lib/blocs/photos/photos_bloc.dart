@@ -19,18 +19,18 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
 
   @override
   Stream<PhotosState> mapEventToState(
-    PhotosEvent event,
+    PhotosEvent event,   //1
   ) async* {
     // TODO: implement mapEventToState
-    if (event is LoadPhotos) {
-      yield* _mapLoadPhotosToState();
+    if (event is LoadPhotos) {      //2
+      yield* _mapLoadPhotosToState(); //3
     } else if (event is AddPhoto) {
       yield* _mapAddPhotoToState(event);
     } else if (event is UpdatePhoto) {
       yield* _mapUpdatePhotoToState(event);
     } else if (event is DeletePhoto) {
       yield* _mapDeletePhotoToState(event);
-    } else if (event is PhotosUpdated) {
+    } else if (event is PhotosUpdated) { //6
       yield* _mapPhotosUpdatedToState(event);
     }
   }
@@ -42,8 +42,8 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
   }
 
   Stream<PhotosState> _mapLoadPhotosToState() async* {
-    _photoSubscription?.cancel();
-    _photoSubscription = _photoRepository
+    _photoSubscription?.cancel();  //4
+    _photoSubscription = _photoRepository //5
         .photos()
         .listen((photos) => add(PhotosUpdated(photos)));
   }

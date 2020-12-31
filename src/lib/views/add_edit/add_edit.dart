@@ -50,8 +50,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
 
   loadTfliteModel() async {
     var res = await Tflite.loadModel(
-        model: 'assets/converted_tflite/model_unquant.tflite',
-        labels: 'assets/converted_tflite/labels.txt');
+        model: 'assets/model_tflite/model_unquant.tflite',
+        labels: 'assets/model_tflite/labels.txt');
 
     print('\n Load Model Result: $res');
   }

@@ -64,8 +64,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/converted_tflite/labels.txt
-    - assets/converted_tflite/model_unquant.tflite
+    - assets/model_tflite/labels.txt
+    - assets/model_tflite/model_unquant.tflite
 
   # To add assets to your application, add an assets section, like this:
   # assets:
