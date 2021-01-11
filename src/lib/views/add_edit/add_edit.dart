@@ -192,7 +192,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                               children: 
                               [
                                 new CircularPercentIndicator(
-                                  radius: 130.0,
+                                  radius: 180.0,
                                   animation: true,
                                   animationDuration: 1200,
                                   lineWidth: 15.0,
