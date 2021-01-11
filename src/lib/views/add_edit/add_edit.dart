@@ -71,12 +71,12 @@ class _AddEditScreenState extends State<AddEditScreen> {
 
   applyModelOnImage() async {
     var result = await Tflite.runModelOnImage(
-      path: _imageFile.path,
-      numResults: 2,
-      threshold: 0.5,
-      imageMean: 127.5,
-      imageStd: 127.5);
-    print(result);
+        path: _imageFile.path,
+        numResults: 2,
+        threshold: 0.5,
+        imageMean: 127.5,
+        imageStd: 127.5);
+    print('applyModel result: $result');
     setState(() {
       // _beConfidence = res[0]["confidence"] * 100;
       // _maConfidence = res[1]["confidence"] * 100;
@@ -187,65 +187,66 @@ class _AddEditScreenState extends State<AddEditScreen> {
                     child: Column(
                       children: _outputs != null
                           ? _outputs.map((result) {
-                          return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: 
-                              [
-                                new CircularPercentIndicator(
-                                  radius: 180.0,
-                                  animation: true,
-                                  animationDuration: 1200,
-                                  lineWidth: 15.0,
-                                  percent: result['confidence'] ,
-                                  center: 
-                                  new Text(
-                                    "${result["label"]}",
-                                    style: new TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0),
+                              print(result);
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  new CircularPercentIndicator(
+                                    radius: 180.0,
+                                    animation: true,
+                                    animationDuration: 1200,
+                                    lineWidth: 15.0,
+                                    percent: result['index'] == 1 ? result['confidence'] : 1 - result['confidence'],
+                                    center: new Text(
+                                      "${result["label"]}",
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0),
+                                    ),
+                                    circularStrokeCap: CircularStrokeCap.round,
+                                    backgroundColor: Colors.green[600],
+                                    progressColor: Colors.red[700],
                                   ),
-                                  circularStrokeCap: CircularStrokeCap.round,
-                                  backgroundColor: Colors.green[600],
-                                  progressColor: Colors.red[700],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    new LinearPercentIndicator(
-                                      width: 60.0,
-                                      lineHeight: 8.0,
-                                      percent: 1,
-                                      trailing: const Text('Percent Wrong'),
-                                      progressColor: Colors.green[600],
-                                    ),
-                                    new LinearPercentIndicator(
-                                      width: 60.0,
-                                      lineHeight: 8.0,
-                                      percent: 1,
-                                      trailing: const Text('Percent Right'),
-                                      progressColor: Colors.red[700],
-                                    ),
-                                  ],
-                                )
-                              ],
-                            );
-                          }).toList() 
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      new LinearPercentIndicator(
+                                        width: 60.0,
+                                        lineHeight: 8.0,
+                                        percent: 1,
+                                        trailing: const Text('Benign'),
+                                        progressColor: Colors.green[600],
+                                      ),
+                                      new LinearPercentIndicator(
+                                        width: 60.0,
+                                        lineHeight: 8.0,
+                                        percent: 1,
+                                        trailing: const Text('Malignant'),
+                                        progressColor: Colors.red[700],
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              );
+                            }).toList()
                           : [
-                        RaisedButton(
-                          color: Colors.orange[700],
-                          onPressed: () {
-                            if (_imageFile != null) {
-                              applyModelOnImage();
-                            }
-                          },
-                          child: Text(
-                            'Predict',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
+                              RaisedButton(
+                                color: Colors.orange[700],
+                                onPressed: () {
+                                  if (_imageFile != null) {
+                                    applyModelOnImage();
+                                  }
+                                },
+                                child: Text(
+                                  'Predict',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ],
                     ),
                     visible: true,
                   )
