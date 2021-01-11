@@ -24,8 +24,8 @@ class Photo {
       String descript,
       String userId,
       String photoUrl,
-      String benignRate,
-      String malignantRate}) {
+      double benignRate,
+      double malignantRate}) {
     return Photo(title ?? this.title,
         id: id ?? this.id,
         descript: descript ?? this.descript,

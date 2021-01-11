@@ -34,8 +34,8 @@ class HomeTab extends StatelessWidget {
                 onTap: () async {
                   final remmovedPhoto = await Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) {
-                        return DetailsPage(id: photo.id);
-                      }));
+                    return DetailsPage(id: photo.id);
+                  }));
                   if (remmovedPhoto != null) {
                     Scaffold.of(context).showSnackBar(DeleteSnackBar(
                         photo: photo,

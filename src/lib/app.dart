@@ -4,7 +4,6 @@ import 'package:src/models/models.dart';
 import 'package:src/repositories/photos_firebase_repository.dart';
 import 'package:src/repositories/repositories.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:src/config/theme.dart';
 import 'package:src/views/add_edit/add_edit.dart';
 import 'package:src/views/splash/splash_page.dart';
 import 'package:src/views/login/login_page.dart';

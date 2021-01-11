@@ -112,11 +112,7 @@ class LoginForm extends StatelessWidget {
                       SizedBox(
                         height: 30,
                       ),
-                      
-                          FadeAnimation(
-                          1.5,
-                          _SignUpButton()
-                          ),
+                      FadeAnimation(1.5, _SignUpButton()),
                       SizedBox(
                         height: 30,
                       ),
@@ -210,7 +206,6 @@ class _LoginButton extends StatelessWidget {
 class _GoogleLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return RaisedButton.icon(
       key: const Key('loginForm_googleLogin_raisedButton'),
       label: const Text(
@@ -228,7 +223,6 @@ class _GoogleLoginButton extends StatelessWidget {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return FlatButton(
       key: const Key('loginForm_createAccount_flatButton'),
       child: Text(

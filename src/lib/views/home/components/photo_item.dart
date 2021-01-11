@@ -18,17 +18,23 @@ class PhotoItem extends StatelessWidget {
     return Dismissible(
         key: Key('__photo_item_${photo.id}'),
         onDismissed: onDismissed,
-        child: ListTile(
-          onTap: onTap,
-          title: Hero(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                photo.title,
-                style: Theme.of(context).textTheme.headline6,
+        child: Card(
+          child: ListTile(
+            onTap: onTap,
+            title: Hero(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  photo.title,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
               ),
+              tag: '${photo.id}__heroTag',
             ),
-            tag: '${photo.id}__heroTag',
+            leading: photo.benignRate > photo.malignantRate ? Icon(
+              Icons.mood_rounded,
+              color: Colors.green,
+            ): Icon(Icons.mood_bad),
           ),
         ));
   }
