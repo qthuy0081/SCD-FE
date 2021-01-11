@@ -38,6 +38,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
   File _imageFile;
   FirebaseStorage storage = FirebaseStorage.instance;
   ProgressDialog progressDialog;
+  List _outputs;
   double _beConfidence = 0;
   double _maConfidence = 0;
 
@@ -69,11 +70,17 @@ class _AddEditScreenState extends State<AddEditScreen> {
   }
 
   applyModelOnImage() async {
-    List res = await Tflite.runModelOnImage(path: _imageFile.path);
-    print(res);
+    var result = await Tflite.runModelOnImage(
+      path: _imageFile.path,
+      numResults: 2,
+      threshold: 0.5,
+      imageMean: 127.5,
+      imageStd: 127.5);
+    print(result);
     setState(() {
-      _beConfidence = res[0]["confidence"] * 100;
-      _maConfidence = res[1]["confidence"] * 100;
+      // _beConfidence = res[0]["confidence"] * 100;
+      // _maConfidence = res[1]["confidence"] * 100;
+      _outputs = result;
     });
     // Directory appDocDir = await getTemporaryDirectory();
     // File downloadToFile = File('${appDocDir.path}/$title.jpg');
@@ -178,47 +185,52 @@ class _AddEditScreenState extends State<AddEditScreen> {
                   // ),
                   Visibility(
                     child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            new CircularPercentIndicator(
-                              radius: 130.0,
-                              animation: true,
-                              animationDuration: 1200,
-                              lineWidth: 15.0,
-                              percent: _maConfidence / 100,
-                              center: new Text(
-                                '${_maConfidence.toStringAsFixed(1)}',
-                                style: new TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0),
-                              ),
-                              circularStrokeCap: CircularStrokeCap.round,
-                              backgroundColor: Colors.green[600],
-                              progressColor: Colors.red[700],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                new LinearPercentIndicator(
-                                  width: 60.0,
-                                  lineHeight: 8.0,
-                                  percent: 1,
-                                  trailing: const Text('benign'),
-                                  progressColor: Colors.green[600],
-                                ),
-                                new LinearPercentIndicator(
-                                  width: 60.0,
-                                  lineHeight: 8.0,
-                                  percent: 1,
-                                  trailing: const Text('malignant'),
+                      children: _outputs != null
+                          ? _outputs.map((result) {
+                          return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: 
+                              [
+                                new CircularPercentIndicator(
+                                  radius: 130.0,
+                                  animation: true,
+                                  animationDuration: 1200,
+                                  lineWidth: 15.0,
+                                  percent: result['confidence'] ,
+                                  center: 
+                                  new Text(
+                                    "${result["label"]}",
+                                    style: new TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0),
+                                  ),
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  backgroundColor: Colors.green[600],
                                   progressColor: Colors.red[700],
                                 ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    new LinearPercentIndicator(
+                                      width: 60.0,
+                                      lineHeight: 8.0,
+                                      percent: 1,
+                                      trailing: const Text('benign'),
+                                      progressColor: Colors.green[600],
+                                    ),
+                                    new LinearPercentIndicator(
+                                      width: 60.0,
+                                      lineHeight: 8.0,
+                                      percent: 1,
+                                      trailing: const Text('malignant'),
+                                      progressColor: Colors.red[700],
+                                    ),
+                                  ],
+                                )
                               ],
-                            )
-                          ],
-                        ),
+                            );
+                          }).toList() 
+                          : [
                         RaisedButton(
                           color: Colors.orange[700],
                           onPressed: () {
